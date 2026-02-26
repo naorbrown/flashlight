@@ -145,7 +145,7 @@ flashlight/
 
 | Package | Purpose |
 |---|---|
-| [Expo](https://expo.dev) SDK 55 | React Native framework — no Xcode needed |
+| [Expo](https://expo.dev) SDK 54 | React Native framework — no Xcode needed |
 | [expo-camera](https://docs.expo.dev/versions/latest/sdk/camera/) | Hardware LED torch control |
 | [expo-brightness](https://docs.expo.dev/versions/latest/sdk/brightness/) | Screen brightness API |
 | [NativeWind](https://www.nativewind.dev) v4 | Tailwind CSS for phone apps |
