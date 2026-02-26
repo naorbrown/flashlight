@@ -1,129 +1,158 @@
 # Flashlight
 
-A dead-simple flashlight app for iOS and Android. Full-screen colored light with swipe-to-dim and hardware torch toggle.
+> **This is a test/demo app.** Built as an experiment to see how fast you can go from zero to a working iOS app using Expo + Claude Code. Not intended for the App Store.
 
-Built with [Expo](https://expo.dev), [NativeWind](https://www.nativewind.dev), and [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/).
+A dead-simple flashlight app for your iPhone. Your screen turns into a colored light. Swipe up and down to dim it. Tap to toggle the real flashlight LED.
 
-## Features
+---
 
-- **Colored screen light** — 10 colors including warm white, red (night vision safe), and more
-- **Swipe to dim** — drag up/down anywhere on screen to control brightness
-- **Hardware torch** — tap to toggle the phone's LED flashlight
-- **Zero UI chrome** — fullscreen, no headers, no nav bars, just light
+## What It Does
 
-## How It Works
+- Your **whole screen** becomes a bright solid color — that's the flashlight
+- **Swipe up** to make it brighter, **swipe down** to dim it
+- **Tap anywhere** to turn your phone's actual LED flashlight on/off
+- **Pick a color** from the dots on the right side (white, red, blue, etc.)
+- That's it. No settings, no menus, no accounts. Just light.
 
-| Feature | Mechanism |
-|---------|-----------|
-| Screen flashlight | Full-screen `View` with selected background color |
-| Brightness control | `expo-brightness` sets actual screen brightness (0.1–1.0) |
-| Hardware torch | `expo-camera` `CameraView` with `enableTorch` (hidden 1x1px) |
-| Swipe gesture | `react-native-gesture-handler` Pan gesture + Reanimated |
-| Styling | NativeWind (Tailwind CSS for React Native) |
+---
 
-> **Note:** The phone's LED torch is always white — it doesn't support colors. The "colored flashlight" is the phone screen at max brightness. Both the screen light and hardware torch work together.
+## How to Run This on Your iPhone
 
-## Requirements
+You don't need Xcode. You don't need to know Swift. Follow these steps exactly.
 
-- [Node.js](https://nodejs.org/) 18+
-- [Expo Go](https://expo.dev/go) app on your phone (for testing on device)
-- Physical device required for hardware torch (simulators don't have an LED)
+### Step 1: Install Node.js on your computer
 
-## Quick Start
+You need Node.js to run the project. If you're not sure whether you have it:
+
+1. Open **Terminal** on your Mac (search "Terminal" in Spotlight)
+2. Type `node --version` and press Enter
+3. If you see a version number like `v18.x.x` or higher, you're good — skip to Step 2
+4. If you get "command not found", go to https://nodejs.org and download the **LTS** version
+5. Run the installer, click through the prompts, done
+
+### Step 2: Download the project
+
+In Terminal, run these commands one at a time:
 
 ```bash
-# Clone the repo
 git clone https://github.com/naorbrown/flashlight.git
+```
+
+```bash
 cd flashlight
+```
 
-# Install dependencies
+```bash
 npm install
+```
 
-# Start the dev server
+The last command will take a minute. Wait for it to finish.
+
+### Step 3: Install Expo Go on your iPhone
+
+1. Open the **App Store** on your iPhone
+2. Search for **"Expo Go"**
+3. Download it (it's free)
+
+### Step 4: Start the app
+
+In Terminal (make sure you're still in the `flashlight` folder), run:
+
+```bash
 npx expo start
 ```
 
-Then scan the QR code with **Expo Go** on your phone.
+You'll see a QR code appear in your terminal.
 
-## Usage
+### Step 5: Open it on your phone
 
-| Action | What it does |
-|--------|-------------|
-| **Swipe up** | Increase screen brightness |
-| **Swipe down** | Decrease screen brightness |
-| **Tap** | Toggle hardware LED torch on/off |
-| **Tap a color** | Change the screen light color |
+1. Open the **Camera** app on your iPhone
+2. Point it at the QR code in your terminal
+3. Tap the notification that says "Open in Expo Go"
+4. The app loads on your phone. Done.
 
-## Project Structure
+> **Make sure your phone and computer are on the same Wi-Fi network.** If the QR code doesn't work, try running `npx expo start --tunnel` instead (it'll install a tunnel package — say yes).
+
+### Step 6: Allow camera access
+
+The app will ask for camera permission the first time. **Tap Allow.** This is needed to control the LED flashlight — it doesn't take photos.
+
+---
+
+## Using the App
+
+| What to do | What happens |
+|---|---|
+| Swipe up on the screen | Screen gets brighter |
+| Swipe down on the screen | Screen gets dimmer |
+| Tap anywhere on the screen | Turns the LED flashlight on/off |
+| Tap a colored dot on the right | Changes the screen color |
+
+---
+
+## Troubleshooting
+
+**"QR code not working"**
+- Make sure your phone and computer are on the same Wi-Fi
+- Try `npx expo start --tunnel` instead
+
+**"Camera permission denied"**
+- Go to iPhone Settings > scroll down to Expo Go > Camera > set to Allow
+- The app still works as a screen light without it, you just can't use the LED
+
+**"App crashes on launch"**
+- Run `npx expo start --clear` to clear the cache and try again
+
+**"npm install is failing"**
+- Make sure you have Node 18 or higher: `node --version`
+- Try deleting `node_modules` and running `npm install` again
+
+---
+
+## How It's Built
+
+For anyone curious about the tech:
+
+| Feature | How it works |
+|---|---|
+| Screen light | Full-screen colored `View` component |
+| Brightness | `expo-brightness` controls actual screen brightness |
+| LED flashlight | `expo-camera` with a hidden 1x1 pixel camera view |
+| Swipe gesture | `react-native-gesture-handler` + `react-native-reanimated` |
+| Styling | NativeWind (Tailwind CSS for React Native) |
+
+The phone's LED is always white — only the screen changes color. Both work together.
+
+### Project Structure
 
 ```
 flashlight/
 ├── app/
-│   ├── _layout.tsx          # Root layout (gesture handler wrapper)
-│   └── index.tsx            # Main screen — state management
+│   ├── _layout.tsx          # Root layout
+│   └── index.tsx            # Main screen
 ├── components/
-│   ├── ColorPalette.tsx     # Right-side color swatches
-│   ├── FlashlightScreen.tsx # Gesture-controlled colored screen
-│   └── TorchController.tsx  # Hidden CameraView for hardware LED
+│   ├── ColorPalette.tsx     # Color picker dots
+│   ├── FlashlightScreen.tsx # The big colored screen + gestures
+│   └── TorchController.tsx  # Hidden camera that controls the LED
 ├── hooks/
-│   └── useFlashlight.ts     # Screen brightness API + lifecycle
+│   └── useFlashlight.ts     # Screen brightness logic
 ├── constants/
-│   └── colors.ts            # Color palette definitions
-├── global.css               # Tailwind directives
-├── tailwind.config.js       # NativeWind + Tailwind config
-├── babel.config.js          # NativeWind + Expo presets
-├── metro.config.js          # NativeWind Metro wrapper
-└── app.json                 # Expo configuration
+│   └── colors.ts            # The 10 color options
+└── [config files]           # Expo, Tailwind, Babel, Metro configs
 ```
 
-## Tech Stack
+### Tech Stack
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| [Expo](https://expo.dev) | SDK 55 | React Native framework |
-| [expo-camera](https://docs.expo.dev/versions/latest/sdk/camera/) | ~55 | Hardware torch control |
-| [expo-brightness](https://docs.expo.dev/versions/latest/sdk/brightness/) | ~55 | Screen brightness API |
-| [expo-router](https://docs.expo.dev/router/introduction/) | ~55 | File-based routing |
-| [NativeWind](https://www.nativewind.dev) | v4 | Tailwind CSS for React Native |
-| [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) | ~2.30 | Pan/tap gesture recognition |
-| [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) | v4 | 60fps gesture-driven animations |
+| Package | Purpose |
+|---|---|
+| [Expo](https://expo.dev) SDK 55 | React Native framework — no Xcode needed |
+| [expo-camera](https://docs.expo.dev/versions/latest/sdk/camera/) | Hardware LED torch control |
+| [expo-brightness](https://docs.expo.dev/versions/latest/sdk/brightness/) | Screen brightness API |
+| [NativeWind](https://www.nativewind.dev) v4 | Tailwind CSS for phone apps |
+| [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) | Swipe and tap detection |
+| [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) v4 | Smooth 60fps animations |
 
-## Permissions
-
-- **Camera** (iOS & Android) — required to control the hardware LED torch. The camera preview is hidden (1x1px); no photos are taken or stored.
-- **Screen brightness** — controlled via `expo-brightness`. No special permission needed on iOS. Android may request `WRITE_SETTINGS` for system-level brightness.
-
-If camera permission is denied, the app still works as a screen-only colored flashlight — the hardware torch toggle just won't function.
-
-## Platform Notes
-
-- **iOS**: Screen brightness is app-scoped. Restored when the app backgrounds.
-- **Android**: Auto-brightness is temporarily set to manual while the app is active, then restored.
-- **Simulators**: The screen flashlight works, but the hardware torch requires a physical device.
-
-## Building for Production
-
-When you're ready to ship to the App Store or Google Play:
-
-```bash
-# Install EAS CLI
-npm install -g eas-cli
-
-# Configure your project
-eas build:configure
-
-# Build for iOS
-eas build --platform ios
-
-# Build for Android
-eas build --platform android
-
-# Submit to stores
-eas submit --platform ios
-eas submit --platform android
-```
-
-See the [EAS Build docs](https://docs.expo.dev/build/introduction/) for full details.
+---
 
 ## License
 
