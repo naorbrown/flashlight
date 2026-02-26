@@ -33,7 +33,7 @@ Built with [Expo](https://expo.dev), [NativeWind](https://www.nativewind.dev), a
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/flashlight.git
+git clone https://github.com/naorbrown/flashlight.git
 cd flashlight
 
 # Install dependencies
